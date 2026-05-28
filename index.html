@@ -313,25 +313,25 @@
     <div class="ctrl">
       <label>Mode</label>
       <div class="seg" data-control="mode">
-        <button data-val="dots" class="active">Cells</button>
+        <button data-val="dots">Cells</button>
         <button data-val="cols">Cols</button>
-        <button data-val="rows">Rows</button>
+        <button data-val="rows" class="active">Rows</button>
       </div>
     </div>
 
     <div class="ctrl">
       <label>Density</label><span class="val" id="v-density">120</span>
-      <input type="range" id="density" min="20" max="400" step="1" value="37">
+      <input type="range" id="density" min="20" max="400" step="1" value="61">
     </div>
 
     <div class="ctrl">
       <label>Cell Width</label><span class="val" id="v-cellw">1.00</span>
-      <input type="range" id="cellw" min="0.3" max="2.5" step="0.01" value="0.8">
+      <input type="range" id="cellw" min="0.3" max="2.5" step="0.01" value="1.4">
     </div>
 
     <div class="ctrl">
       <label>Cell Height</label><span class="val" id="v-cellh">1.00</span>
-      <input type="range" id="cellh" min="0.3" max="2.5" step="0.01" value="0.3">
+      <input type="range" id="cellh" min="0.3" max="2.5" step="0.01" value="1.67">
     </div>
 
     <div class="ctrl">
@@ -346,7 +346,7 @@
 
     <div class="ctrl">
       <label>Spacing</label><span class="val" id="v-spacing">0.00</span>
-      <input type="range" id="spacing" min="0" max="0.9" step="0.01" value="0.08">
+      <input type="range" id="spacing" min="0" max="0.9" step="0.01" value="0.19">
     </div>
 
     <!-- BRIGHTNESS -->
@@ -414,7 +414,7 @@
 
     <div class="color-row" style="margin-top:6px;">
       <label>Background</label>
-      <div class="swatch-wrap"><input type="color" id="bg-color" value="#000000"></div>
+      <div class="swatch-wrap"><input type="color" id="bg-color" value="#f5f1ea"></div>
     </div>
 
     <!-- OBJECT -->
@@ -465,13 +465,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // STATE — single source of truth, wired to UI
 // ============================================================
 const state = {
-  mode: 0,            // 0=cells, 1=cols, 2=rows
-  density: 37,
-  cellW: 0.8,
-  cellH: 0.3,
+  mode: 2,            // 0=cells, 1=cols, 2=rows
+  density: 61,
+  cellW: 1.4,
+  cellH: 1.67,
   round: 1.0,
   rot: 0,
-  spacing: 0.08,
+  spacing: 0.19,
   fov: 10,
   sizeFromBrt: false,
   low: 0.01,
@@ -482,7 +482,7 @@ const state = {
   gLow:  [0.10, 0.20, 0.0],
   gMid:  [0.53, 0.85, 0.0],
   gHigh: [0.93, 1.0, 0.73],
-  bg:    [0.0, 0.0, 0.0],
+  bg:    [0.961, 0.945, 0.918],
   shading: 1,         // 0=flat, 1=lit
   spinOn: true,
   spinSpeed: 0.3,
