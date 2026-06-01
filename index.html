@@ -245,103 +245,6 @@
   .toggle.on .pill { background: var(--accent); }
   .toggle.on .pill::after { left: 13px; }
 
-  /* Action buttons */
-  .action-btn {
-    appearance: none;
-    border: 1px solid var(--panel-border);
-    background: var(--track);
-    color: var(--ink-dim);
-    padding: 9px 4px;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
-  }
-  .action-btn:hover { background: var(--panel-hover); color: var(--ink); border-color: var(--ink-faint); }
-
-  .preset-row {
-    display: flex; gap: 5px; margin-bottom: 8px;
-  }
-  .preset-row select { flex: 1; margin-bottom: 0; }
-  .preset-row .action-btn { flex-shrink: 0; white-space: nowrap; }
-
-  .preset-input {
-    flex: 1; min-width: 0;
-    background: var(--track);
-    border: 1px solid var(--panel-border);
-    color: var(--ink);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.05em;
-    padding: 8px 10px;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .preset-input::placeholder { color: var(--ink-faint); }
-  .preset-input:focus { border-color: var(--ink-faint); }
-  .preset-input.error { border-color: rgba(255,80,80,0.6); }
-
-  select {
-    -webkit-appearance: none; appearance: none;
-    width: 100%;
-    background: var(--track);
-    border: 1px solid var(--panel-border);
-    color: var(--ink-dim);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px; font-weight: 500;
-    letter-spacing: 0.08em;
-    padding: 8px 28px 8px 10px;
-    border-radius: 6px;
-    cursor: pointer; outline: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5'><polygon points='0,0 8,0 4,5' fill='%234a4a52'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    margin-bottom: 8px;
-    transition: border-color 0.15s, color 0.15s;
-  }
-  select:hover { border-color: var(--ink-faint); color: var(--ink); }
-  select option { background: #18181b; color: var(--ink); }
-
-  /* Randomize */
-  .rnd-row { display: flex; gap: 5px; margin-bottom: 4px; }
-  .rnd-checks {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--panel-border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-bottom: 10px;
-    display: none;
-  }
-  .rnd-checks.open { display: block; }
-  .rnd-group-label {
-    font-size: 8px; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--ink-faint);
-    margin: 8px 0 4px;
-  }
-  .rnd-group-label:first-child { margin-top: 0; }
-  .rnd-check-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 3px 0;
-    font-size: 9px; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--ink-dim);
-    cursor: pointer;
-    user-select: none;
-  }
-  .rnd-check-item input[type=checkbox] {
-    accent-color: var(--accent);
-    width: 12px; height: 12px;
-    cursor: pointer; flex-shrink: 0;
-    margin: 0;
-  }
-
   /* Hint footer */
   .hint {
     position: fixed; bottom: 18px; left: 18px;
@@ -404,44 +307,17 @@
   </div>
 
   <aside class="panel">
-    <!-- PRESETS -->
-    <h2>Presets <span class="badge">config</span></h2>
-    <div class="preset-row" style="margin-bottom:6px;">
-      <input type="text" id="preset-name" class="preset-input" placeholder="preset name…" autocomplete="off" spellcheck="false">
-      <button class="action-btn" id="btn-save-preset">Save</button>
+    <!-- SOURCE -->
+    <h2>Source <span class="badge">input</span></h2>
+    <div class="ctrl">
+      <div class="seg" data-control="source" style="grid-column:1/-1;">
+        <button data-val="0" class="active">3D Object</button>
+        <button data-val="1">Video</button>
+      </div>
     </div>
-    <div class="preset-row">
-      <select id="preset-select"><option value="">— select preset —</option></select>
-      <button class="action-btn" id="btn-del-preset">Del</button>
-    </div>
-    <button class="action-btn" style="width:100%;margin-bottom:12px;" id="btn-reset-preset">Reset to defaults</button>
 
     <!-- GRID -->
     <h2>Grid <span class="badge">structure</span></h2>
-
-    <div class="rnd-row">
-      <button class="action-btn" style="flex:1;" id="btn-randomize">Randomize</button>
-      <button class="action-btn" style="width:32px;" id="btn-rnd-toggle">▾</button>
-    </div>
-    <div class="rnd-checks" id="rnd-checks">
-      <div class="rnd-group-label">Grid</div>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="mode" checked> Mode</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="density" checked> Density</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="cellW" checked> Cell Width</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="cellH" checked> Cell Height</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="round" checked> Roundness</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="rot" checked> Rotation</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="spacing" checked> Spacing</label>
-      <div class="rnd-group-label">Brightness</div>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="brightness" checked> Low / Mid / High</label>
-      <div class="rnd-group-label">Color</div>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="palPick" checked> Palette</label>
-      <div class="rnd-group-label">Camera</div>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="fov" checked> FOV</label>
-      <div class="rnd-group-label">Display</div>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="sizeFromBrt" checked> Size ← Brightness</label>
-      <label class="rnd-check-item"><input type="checkbox" data-rnd="shading" checked> Shading</label>
-    </div>
 
     <div class="ctrl">
       <label>Mode</label>
@@ -510,6 +386,7 @@
         <button data-val="palrandom">Rand</button>
         <button data-val="palluma">Luma</button>
         <button data-val="palpick" class="active">Pick</button>
+        <button data-val="layers">Lay</button>
       </div>
     </div>
 
@@ -545,6 +422,29 @@
       </div>
     </div>
 
+    <div id="layer-controls" style="display:none;">
+      <div class="color-row">
+        <label>Dark</label>
+        <div class="swatch-wrap"><input type="color" id="layer-0-color" value="#1a0a05"></div>
+      </div>
+      <div class="ctrl">
+        <label>Threshold</label><span class="val" id="v-layert1">0.33</span>
+        <input type="range" id="layert1" min="0.01" max="0.98" step="0.01" value="0.33">
+      </div>
+      <div class="color-row">
+        <label>Mid</label>
+        <div class="swatch-wrap"><input type="color" id="layer-1-color" value="#e44d43"></div>
+      </div>
+      <div class="ctrl">
+        <label>Threshold</label><span class="val" id="v-layert2">0.67</span>
+        <input type="range" id="layert2" min="0.02" max="0.99" step="0.01" value="0.67">
+      </div>
+      <div class="color-row">
+        <label>Light</label>
+        <div class="swatch-wrap"><input type="color" id="layer-2-color" value="#f9cf80"></div>
+      </div>
+    </div>
+
     <div class="color-row" style="margin-top:6px;">
       <label>Background</label>
       <div class="swatch-wrap"><input type="color" id="bg-color" value="#f5f1ea"></div>
@@ -553,84 +453,32 @@
     <!-- OBJECT -->
     <h2>Object <span class="badge">3d source</span></h2>
 
-    <div class="ctrl">
-      <label>Source</label>
-      <div class="seg" data-control="source">
-        <button data-val="model" class="active">Model</button>
-        <button data-val="text">Text</button>
-      </div>
-    </div>
-
-    <div id="text-controls" style="display:none;">
-      <select id="font-select" style="margin-bottom:8px;">
-        <option value="helvetiker_bold">Helvetiker Bold</option>
-        <option value="helvetiker_regular">Helvetiker Regular</option>
-        <option value="gentilis_bold">Gentilis Bold</option>
-        <option value="gentilis_regular">Gentilis Regular</option>
-        <option value="optimer_bold">Optimer Bold</option>
-        <option value="droid_serif_regular">Droid Serif</option>
-      </select>
-      <div style="margin-bottom:8px;">
-        <input type="text" id="text-input" value="HALFTONE"
-          style="width:100%;background:var(--track);border:1px solid var(--panel-border);
-                 color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;
-                 letter-spacing:0.08em;padding:8px 10px;border-radius:6px;outline:none;
-                 text-transform:uppercase;" autocomplete="off" spellcheck="false">
-      </div>
+    <div id="source-3d-ui">
       <div class="ctrl">
-        <label>Depth</label><span class="val" id="v-textdepth">0.30</span>
-        <input type="range" id="textdepth" min="0.01" max="1.5" step="0.01" value="0.3">
+        <label>FOV</label><span class="val" id="v-fov">35°</span>
+        <input type="range" id="fov" min="10" max="90" step="1" value="10">
       </div>
+
       <div class="ctrl">
-        <label>Bevel</label><span class="val" id="v-textbevel">0.04</span>
-        <input type="range" id="textbevel" min="0" max="0.2" step="0.005" value="0.04">
+        <label>Shading</label>
+        <div class="seg" data-control="shading">
+          <button data-val="flat">Silhouette</button>
+          <button data-val="lit" class="active">Lit</button>
+        </div>
       </div>
-    </div>
 
-    <div class="ctrl">
-      <label>FOV</label><span class="val" id="v-fov">35°</span>
-      <input type="range" id="fov" min="10" max="90" step="1" value="10">
-    </div>
+      <button class="toggle" id="toggle-size-brt">
+        Size ← Brightness <span class="pill"></span>
+      </button>
 
-    <div class="ctrl">
-      <label>Shading</label>
-      <div class="seg" data-control="shading">
-        <button data-val="flat">Silhouette</button>
-        <button data-val="lit" class="active">Lit</button>
+      <button class="toggle on" id="toggle-spin">
+        Auto-spin <span class="pill"></span>
+      </button>
+
+      <div class="ctrl">
+        <label>Spin Speed</label><span class="val" id="v-spin">0.30</span>
+        <input type="range" id="spin" min="0" max="2" step="0.01" value="0.3">
       </div>
-    </div>
-
-    <button class="toggle" id="toggle-size-brt">
-      Size ← Brightness <span class="pill"></span>
-    </button>
-
-    <button class="toggle on" id="toggle-spin">
-      Auto-spin <span class="pill"></span>
-    </button>
-
-    <div class="ctrl">
-      <label>Spin Speed</label><span class="val" id="v-spin">0.30</span>
-      <input type="range" id="spin" min="0" max="2" step="0.01" value="0.3">
-    </div>
-
-    <!-- LIGHTING -->
-    <h2>Lighting <span class="badge">key light</span></h2>
-
-    <div class="ctrl">
-      <label>Azimuth</label><span class="val" id="v-lightaz">30°</span>
-      <input type="range" id="lightaz" min="-180" max="180" step="1" value="30">
-    </div>
-    <div class="ctrl">
-      <label>Elevation</label><span class="val" id="v-lightel">45°</span>
-      <input type="range" id="lightel" min="-30" max="90" step="1" value="45">
-    </div>
-    <div class="ctrl">
-      <label>Key Int</label><span class="val" id="v-lightkeyint">1.20</span>
-      <input type="range" id="lightkeyint" min="0" max="3" step="0.05" value="1.2">
-    </div>
-    <div class="ctrl">
-      <label>Amb Int</label><span class="val" id="v-lightambint">0.40</span>
-      <input type="range" id="lightambint" min="0" max="2" step="0.05" value="0.4">
     </div>
   </aside>
 
@@ -647,8 +495,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 // ============================================================
 // STATE — single source of truth, wired to UI
@@ -666,7 +512,8 @@ const state = {
   low: 0.01,
   mid: 0.49,
   high: 1.0,
-  colorMode: 4,       // 0=solid, 1=gradient, 2=palrandom, 3=palluma, 4=palpick
+  source: 0,          // 0=3d, 1=video
+  colorMode: 4,       // 0=solid, 1=gradient, 2=palrandom, 3=palluma, 4=palpick, 5=layers
   solid: [0.66, 1.0, 0.04],
   gLow:  [0.10, 0.20, 0.0],
   gMid:  [0.53, 0.85, 0.0],
@@ -676,15 +523,11 @@ const state = {
   spinOn: true,
   spinSpeed: 0.3,
   palPick: 1,
-  source: 'model',    // 'model' | 'text'
-  textContent: 'HALFTONE',
-  textDepth: 0.3,
-  textBevel: 0.04,
-  fontKey: 'helvetiker_bold',
-  lightAzimuth: 30,
-  lightElevation: 45,
-  lightKeyInt: 1.2,
-  lightAmbInt: 0.4,
+  layer0: [0.102, 0.039, 0.020],  // #1a0a05
+  layer1: [0.894, 0.302, 0.263],  // #e44d43
+  layer2: [0.976, 0.812, 0.502],  // #f9cf80
+  layerT1: 0.33,
+  layerT2: 0.67,
 };
 
 // ============================================================
@@ -707,103 +550,17 @@ controls.minDistance = 50;
 controls.maxDistance = 1000;
 controls.target.set(0, 0, 0);
 
-// Lighting — parented to camera so they stay fixed relative to the view
-// (model spins / user orbits without changing apparent illumination)
-scene.add(camera);
-const ambient  = new THREE.AmbientLight(0xffffff, 0.4);
+// Lighting — for the lit mode
+const ambient = new THREE.AmbientLight(0xffffff, 0.4);
 const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
-const rimLight = new THREE.DirectionalLight(0xffffff, 0.5);
-rimLight.position.set(-3, 1, 3);
-const keyTarget = new THREE.Object3D();
-keyTarget.position.set(0, 0, -10); // points into the scene (camera -Z)
-camera.add(ambient, keyLight, rimLight, keyTarget);
-keyLight.target = keyTarget;
-
-function updateKeyLight() {
-  const az = state.lightAzimuth * Math.PI / 180;
-  const el = state.lightElevation * Math.PI / 180;
-  keyLight.position.set(
-    Math.sin(az) * 5,
-    Math.sin(el) * 5,
-    Math.cos(el) * Math.cos(az) * 5  // +Z = behind camera → illuminates front of model
-  );
-  keyLight.intensity    = state.lightKeyInt;
-  ambient.intensity     = state.lightAmbInt;
-}
+keyLight.position.set(2, 3, 4);
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.6);
+rimLight.position.set(-3, 1, -2);
+scene.add(ambient, keyLight, rimLight);
 
 // Model group — lets us spin without affecting camera target
 const modelGroup = new THREE.Group();
 scene.add(modelGroup);
-
-// Text group
-const textGroup = new THREE.Group();
-textGroup.visible = false;
-scene.add(textGroup);
-
-let loadedFont = null;
-let textMesh = null;
-let textRebuildTimer = null;
-
-const FONT_URLS = {
-  helvetiker_bold:     'https://unpkg.com/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json',
-  helvetiker_regular:  'https://unpkg.com/three@0.160.0/examples/fonts/helvetiker_regular.typeface.json',
-  gentilis_bold:       'https://unpkg.com/three@0.160.0/examples/fonts/gentilis_bold.typeface.json',
-  gentilis_regular:    'https://unpkg.com/three@0.160.0/examples/fonts/gentilis_regular.typeface.json',
-  optimer_bold:        'https://unpkg.com/three@0.160.0/examples/fonts/optimer_bold.typeface.json',
-  droid_serif_regular: 'https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_serif_regular.typeface.json',
-};
-const fontCache = {};
-
-function loadFont(key, cb) {
-  if (fontCache[key]) { cb(fontCache[key]); return; }
-  new FontLoader().load(FONT_URLS[key], font => { fontCache[key] = font; cb(font); });
-}
-
-// Load default font on startup
-loadFont(state.fontKey, font => { loadedFont = font; if (state.source === 'text') buildText(true); });
-
-function buildText(reframe = false) {
-  if (!loadedFont) return;
-  if (textMesh) { textGroup.remove(textMesh); textMesh.geometry.dispose(); textMesh = null; }
-
-  const geo = new TextGeometry(state.textContent || ' ', {
-    font: loadedFont,
-    size: 10,
-    depth: Math.max(state.textDepth * 10, 0.1),
-    curveSegments: 8,
-    bevelEnabled: state.textBevel > 0,
-    bevelThickness: state.textBevel * 10,
-    bevelSize: state.textBevel * 5,
-    bevelSegments: 4,
-  });
-  geo.computeBoundingBox();
-  geo.center();
-
-  const mat = state.shading === 0 ? flatMaterial : litMaterial;
-  textMesh = new THREE.Mesh(geo, mat);
-  textGroup.add(textMesh);
-  if (reframe) frameText();
-}
-
-function frameText() {
-  if (!textMesh) return;
-  const box = new THREE.Box3().setFromObject(textGroup);
-  const size = box.getSize(new THREE.Vector3());
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const fov = camera.fov * (Math.PI / 180);
-  const dist = (maxDim * 0.6) / Math.tan(fov / 2);
-  camera.position.set(0, 0, dist * 1.4);
-  controls.target.set(0, 0, 0);
-  controls.update();
-}
-
-function setSource(src) {
-  state.source = src;
-  modelGroup.visible = src === 'model';
-  textGroup.visible  = src === 'text';
-  document.getElementById('text-controls').style.display = src === 'text' ? '' : 'none';
-  if (src === 'text') buildText(true);
-}
 
 // Two materials: flat (silhouette) and lit. We swap on all loaded meshes.
 const flatMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
@@ -859,6 +616,52 @@ const sceneTarget = new THREE.WebGLRenderTarget(2, 2, {
 });
 
 // ============================================================
+// VIDEO SOURCE
+// ============================================================
+const video = Object.assign(document.createElement('video'), {
+  src: './mp_.mp4', muted: true, loop: true, playsInline: true, crossOrigin: 'anonymous',
+});
+video.play().catch(() => {});
+
+const videoTexture = new THREE.VideoTexture(video);
+videoTexture.minFilter = THREE.LinearFilter;
+videoTexture.magFilter = THREE.LinearFilter;
+
+let videoAspect = 16 / 9;
+video.addEventListener('loadedmetadata', () => {
+  videoAspect = video.videoWidth / video.videoHeight;
+  videoPassMat.uniforms.uVideoAspect.value = videoAspect;
+});
+
+const videoPassMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uVideoTex:    { value: videoTexture },
+    uVideoAspect: { value: 16 / 9 },
+    uViewAspect:  { value: 1.0 },
+  },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position,1.0); }`,
+  fragmentShader: /* glsl */`
+    precision highp float;
+    varying vec2 vUv;
+    uniform sampler2D uVideoTex;
+    uniform float uVideoAspect;
+    uniform float uViewAspect;
+    void main() {
+      vec2 uv = vUv;
+      if (uVideoAspect > uViewAspect) {
+        uv.x = (uv.x - 0.5) / (uViewAspect / uVideoAspect) + 0.5;
+      } else {
+        uv.y = (uv.y - 0.5) / (uVideoAspect / uViewAspect) + 0.5;
+      }
+      uv = clamp(uv, 0.0, 1.0);
+      gl_FragColor = vec4(texture2D(uVideoTex, uv).rgb, 1.0);
+    }
+  `,
+});
+const videoScene = new THREE.Scene();
+videoScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), videoPassMat));
+
+// ============================================================
 // HALFTONE PASS
 // ============================================================
 const quadScene = new THREE.Scene();
@@ -894,6 +697,11 @@ const halftoneMaterial = new THREE.ShaderMaterial({
     uPal3A:       { value: new THREE.Vector3(0.812, 0.184, 0.118) },
     uPal3B:       { value: new THREE.Vector3(0.882, 0.557, 0.639) },
     uPalPick:     { value: 0 },
+    uLayer0:      { value: new THREE.Vector3(0.102, 0.039, 0.020) },
+    uLayer1:      { value: new THREE.Vector3(0.894, 0.302, 0.263) },
+    uLayer2:      { value: new THREE.Vector3(0.976, 0.812, 0.502) },
+    uLayerT1:     { value: 0.33 },
+    uLayerT2:     { value: 0.67 },
   },
   vertexShader: /* glsl */`
     varying vec2 vUv;
@@ -931,6 +739,12 @@ const halftoneMaterial = new THREE.ShaderMaterial({
     uniform vec3  uPal2A; uniform vec3 uPal2B;
     uniform vec3  uPal3A; uniform vec3 uPal3B;
     uniform int   uPalPick;
+
+    uniform vec3  uLayer0;
+    uniform vec3  uLayer1;
+    uniform vec3  uLayer2;
+    uniform float uLayerT1;
+    uniform float uLayerT2;
 
     float luma(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
@@ -1050,9 +864,14 @@ const halftoneMaterial = new THREE.ShaderMaterial({
         // Gradient chosen by brightness, fill spans cell
         int gi = int(min(floor(t * 4.0), 3.0));
         fillColor = palColor(gi, cellLocalT);
-      } else {
+      } else if (uColorMode == 4) {
         // Solid color sampled from user-picked gradient via brightness
         fillColor = palColor(uPalPick, t);
+      } else {
+        // LAYERS — discrete color bands mapped to luminance
+        if (t < uLayerT1)      fillColor = uLayer0;
+        else if (t < uLayerT2) fillColor = uLayer1;
+        else                   fillColor = uLayer2;
       }
       gl_FragColor = vec4(mix(bg, fillColor, mask), 1.0);
     }
@@ -1072,6 +891,7 @@ function resize() {
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   halftoneMaterial.uniforms.uResolution.value.set(Math.floor(w * dpr), Math.floor(h * dpr));
+  videoPassMat.uniforms.uViewAspect.value = w / h;
 }
 window.addEventListener('resize', resize);
 resize();
@@ -1084,14 +904,20 @@ const clock = new THREE.Clock();
 function render() {
   const dt = clock.getDelta();
 
-  if (state.spinOn && loadedRoot) modelGroup.rotation.y += dt * state.spinSpeed;
-  controls.update();
+  if (state.source === 0) {
+    if (state.spinOn && loadedRoot) modelGroup.rotation.y += dt * state.spinSpeed;
+    controls.update();
+  }
 
-  // Pass 1 — render 3D scene to offscreen target (transparent clear → alpha masks background)
+  // Pass 1 — fill sceneTarget from active source
   renderer.setRenderTarget(sceneTarget);
   renderer.setClearColor(0x000000, 0);
   renderer.clear();
-  renderer.render(scene, camera);
+  if (state.source === 0) {
+    renderer.render(scene, camera);           // 3D object
+  } else {
+    renderer.render(videoScene, quadCam);     // video passthrough
+  }
 
   // Pass 2 — halftone quad → screen
   renderer.setRenderTarget(null);
@@ -1129,6 +955,11 @@ function syncUniforms() {
   u.uGHigh.value.fromArray(state.gHigh);
   u.uBg.value.fromArray(state.bg);
   u.uPalPick.value = state.palPick;
+  u.uLayer0.value.fromArray(state.layer0);
+  u.uLayer1.value.fromArray(state.layer1);
+  u.uLayer2.value.fromArray(state.layer2);
+  u.uLayerT1.value = state.layerT1;
+  u.uLayerT2.value = state.layerT2;
 }
 
 function bindSlider(id, key, fmt = v => v.toFixed(2), parse = parseFloat, valKey = id) {
@@ -1156,11 +987,11 @@ function bindSegmented(name, key, parse = v => v) {
       document.getElementById('solid-controls').style.display        = state.colorMode === 0 ? '' : 'none';
       document.getElementById('gradient-controls').style.display     = state.colorMode === 1 ? '' : 'none';
       document.getElementById('palette-pick-controls').style.display = state.colorMode === 4 ? '' : 'none';
+      document.getElementById('layer-controls').style.display        = state.colorMode === 5 ? '' : 'none';
     }
     if (key === 'shading') {
       const mat = state.shading === 0 ? flatMaterial : litMaterial;
       meshObjects.forEach(m => { m.material = mat; });
-      if (textMesh) textMesh.material = mat;
     }
     syncUniforms();
   });
@@ -1187,7 +1018,16 @@ bindSlider('spin',    'spinSpeed', v => v.toFixed(2), parseFloat, 'spin');
 
 // Segmented
 bindSegmented('mode',      'mode',      v => ({ dots: 0, cols: 1, rows: 2 }[v]));
-bindSegmented('colormode', 'colorMode', v => ({ solid: 0, gradient: 1, palrandom: 2, palluma: 3, palpick: 4 }[v]));
+bindSegmented('colormode', 'colorMode', v => ({ solid: 0, gradient: 1, palrandom: 2, palluma: 3, palpick: 4, layers: 5 }[v]));
+
+// Source toggle
+bindSegmented('source', 'source', v => parseInt(v));
+document.querySelector('.seg[data-control="source"]').addEventListener('click', () => {
+  const is3d = state.source === 0;
+  document.getElementById('source-3d-ui').style.display = is3d ? '' : 'none';
+  controls.enabled = is3d;
+  if (!is3d) video.play().catch(() => {});
+});
 bindSegmented('shading',   'shading',   v => ({ flat: 0, lit: 1 }[v]));
 
 // Colors
@@ -1224,307 +1064,12 @@ spinBtn.addEventListener('click', () => {
   spinBtn.classList.toggle('on', state.spinOn);
 });
 
-// ============================================================
-// DEFAULTS & PRESETS
-// ============================================================
-const DEFAULTS = {
-  mode: 2, density: 61, cellW: 1.4, cellH: 1.67, round: 1.0, rot: 0, spacing: 0.19,
-  fov: 10, sizeFromBrt: false,
-  low: 0.01, mid: 0.49, high: 1.0,
-  colorMode: 4,
-  solid:  [0.66, 1.0, 0.04],
-  gLow:   [0.10, 0.20, 0.0],
-  gMid:   [0.53, 0.85, 0.0],
-  gHigh:  [0.93, 1.0, 0.73],
-  bg:     [0.961, 0.945, 0.918],
-  shading: 1, spinOn: true, spinSpeed: 0.3, palPick: 1,
-  source: 'model', textContent: 'HALFTONE', textDepth: 0.3, textBevel: 0.04,
-  fontKey: 'helvetiker_bold',
-  lightAzimuth: 30, lightElevation: 45, lightKeyInt: 1.2, lightAmbInt: 0.4,
-};
-
-const PRESET_KEYS = [
-  'mode','density','cellW','cellH','round','rot','spacing',
-  'fov','sizeFromBrt','low','mid','high',
-  'colorMode','solid','gLow','gMid','gHigh','bg','palPick',
-  'shading','spinOn','spinSpeed',
-  'source','textContent','textDepth','textBevel','fontKey',
-  'lightAzimuth','lightElevation','lightKeyInt','lightAmbInt',
-];
-
-function loadPresetList() {
-  const presets = JSON.parse(localStorage.getItem('halftone-tool-presets') || '{}');
-  const sel = document.getElementById('preset-select');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">— select preset —</option>';
-  Object.keys(presets).sort().forEach(n => {
-    const o = document.createElement('option');
-    o.value = n; o.textContent = n; sel.appendChild(o);
-  });
-  if (presets[cur]) sel.value = cur;
-  return presets;
-}
-
-function applyPreset(settings) {
-  PRESET_KEYS.forEach(k => {
-    if (settings[k] !== undefined) state[k] = JSON.parse(JSON.stringify(settings[k]));
-  });
-  // Apply source switch
-  setSource(state.source);
-  // Sync camera
-  camera.fov = state.fov;
-  camera.updateProjectionMatrix();
-  // Sync shading
-  const mat = state.shading === 0 ? flatMaterial : litMaterial;
-  meshObjects.forEach(m => { m.material = mat; });
-  if (textMesh) textMesh.material = mat;
-  // Sync toggles
-  document.getElementById('toggle-size-brt').classList.toggle('on', state.sizeFromBrt);
-  document.getElementById('toggle-spin').classList.toggle('on', state.spinOn);
-  document.querySelector('.seg[data-control="shading"] button[data-val="flat"]').classList.toggle('active', state.shading === 0);
-  document.querySelector('.seg[data-control="shading"] button[data-val="lit"]').classList.toggle('active', state.shading === 1);
-  document.querySelector('.seg[data-control="source"] button[data-val="model"]').classList.toggle('active', state.source === 'model');
-  document.querySelector('.seg[data-control="source"] button[data-val="text"]').classList.toggle('active', state.source === 'text');
-  // Sync sliders
-  [['density','density'],['cellw','cellW'],['cellh','cellH'],['round','round'],['rot','rot'],
-   ['spacing','spacing'],['low','low'],['mid','mid'],['high','high'],
-   ['fov','fov'],['spin','spinSpeed'],['textdepth','textDepth'],['textbevel','textBevel']
-  ].forEach(([id, key]) => {
-    const el = document.getElementById(id); if (el) el.value = state[key];
-  });
-  document.getElementById('v-density').textContent = state.density.toFixed(0);
-  document.getElementById('v-cellw').textContent   = state.cellW.toFixed(2);
-  document.getElementById('v-cellh').textContent   = state.cellH.toFixed(2);
-  document.getElementById('v-round').textContent   = state.round.toFixed(2);
-  document.getElementById('v-rot').textContent     = state.rot.toFixed(0) + '°';
-  document.getElementById('v-spacing').textContent = state.spacing.toFixed(2);
-  document.getElementById('v-low').textContent     = state.low.toFixed(2);
-  document.getElementById('v-mid').textContent     = state.mid.toFixed(2);
-  document.getElementById('v-high').textContent    = state.high.toFixed(2);
-  document.getElementById('v-fov').textContent     = state.fov.toFixed(0) + '°';
-  document.getElementById('v-spin').textContent    = state.spinSpeed.toFixed(2);
-  if (document.getElementById('v-textdepth')) document.getElementById('v-textdepth').textContent = state.textDepth.toFixed(2);
-  if (document.getElementById('v-textbevel')) document.getElementById('v-textbevel').textContent = state.textBevel.toFixed(2);
-  // Mode seg
-  ['dots','cols','rows'].forEach((v,i) => {
-    document.querySelector(`.seg[data-control="mode"] button[data-val="${v}"]`).classList.toggle('active', state.mode === i);
-  });
-  // Color mode seg + visibility
-  const cmMap = {0:'solid',1:'gradient',2:'palrandom',3:'palluma',4:'palpick'};
-  document.querySelectorAll('.seg[data-control="colormode"] button').forEach(b => {
-    b.classList.toggle('active', b.dataset.val === cmMap[state.colorMode]);
-  });
-  document.getElementById('solid-controls').style.display        = state.colorMode === 0 ? '' : 'none';
-  document.getElementById('gradient-controls').style.display     = state.colorMode === 1 ? '' : 'none';
-  document.getElementById('palette-pick-controls').style.display = state.colorMode === 4 ? '' : 'none';
-  // Palette pick
-  document.querySelectorAll('.pal-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.val) === state.palPick));
-  // Text input & font
-  document.getElementById('text-input').value = state.textContent;
-  const fs = document.getElementById('font-select');
-  if (fs) fs.value = state.fontKey;
-  // Light sliders
-  [['lightaz','lightAzimuth'],['lightel','lightElevation'],
-   ['lightkeyint','lightKeyInt'],['lightambint','lightAmbInt']].forEach(([id,key]) => {
-    const el = document.getElementById(id); if (el) el.value = state[key];
-  });
-  document.getElementById('v-lightaz').textContent     = state.lightAzimuth.toFixed(0) + '°';
-  document.getElementById('v-lightel').textContent     = state.lightElevation.toFixed(0) + '°';
-  document.getElementById('v-lightkeyint').textContent = state.lightKeyInt.toFixed(2);
-  document.getElementById('v-lightambint').textContent = state.lightAmbInt.toFixed(2);
-  updateKeyLight();
-  syncUniforms();
-}
-
-document.getElementById('preset-select').addEventListener('change', function() {
-  if (!this.value) return;
-  const presets = JSON.parse(localStorage.getItem('halftone-tool-presets') || '{}');
-  if (presets[this.value]) applyPreset(presets[this.value]);
-});
-
-document.getElementById('btn-save-preset').addEventListener('click', () => {
-  const input = document.getElementById('preset-name');
-  const n = input.value.trim();
-  if (!n) { input.classList.add('error'); input.focus(); setTimeout(() => input.classList.remove('error'), 700); return; }
-  const presets = JSON.parse(localStorage.getItem('halftone-tool-presets') || '{}');
-  const snap = {};
-  PRESET_KEYS.forEach(k => { snap[k] = JSON.parse(JSON.stringify(state[k])); });
-  presets[n] = snap;
-  localStorage.setItem('halftone-tool-presets', JSON.stringify(presets));
-  loadPresetList();
-  document.getElementById('preset-select').value = n;
-  input.value = '';
-});
-
-document.getElementById('btn-del-preset').addEventListener('click', () => {
-  const sel = document.getElementById('preset-select');
-  if (!sel.value) return;
-  const presets = JSON.parse(localStorage.getItem('halftone-tool-presets') || '{}');
-  delete presets[sel.value];
-  localStorage.setItem('halftone-tool-presets', JSON.stringify(presets));
-  loadPresetList();
-});
-
-document.getElementById('btn-reset-preset').addEventListener('click', () => applyPreset(DEFAULTS));
-
-// ============================================================
-// BUNDLED PRESETS — seeded into localStorage on first visit
-// ============================================================
-const BUNDLED_PRESETS = {
-  "9": {
-    "mode":2,"density":90,"cellW":2.2,"cellH":0.35,"round":0,"rot":0,"spacing":0.06,
-    "fov":22,"sizeFromBrt":true,
-    "low":0.05,"mid":0.38,"high":0.92,
-    "colorMode":3,"solid":[0.66,1,0.04],"gLow":[0.1,0.2,0],"gMid":[0.53,0.85,0],"gHigh":[0.93,1,0.73],
-    "bg":[0.96,0.94,0.91],"palPick":0,
-    "shading":1,"spinOn":true,"spinSpeed":0.25,
-    "source":"model","textContent":"HALFTONE","textDepth":0.3,"textBevel":0.04,"fontKey":"helvetiker_bold",
-    "lightAzimuth":30,"lightElevation":45,"lightKeyInt":1.2,"lightAmbInt":0.4
-  },
-  "10": {
-    "mode":0,"density":28,"cellW":1.7,"cellH":1.7,"round":0,"rot":18,"spacing":0.1,
-    "fov":15,"sizeFromBrt":true,
-    "low":0,"mid":0.42,"high":1,
-    "colorMode":2,"solid":[0.66,1,0.04],"gLow":[0.1,0.2,0],"gMid":[0.53,0.85,0],"gHigh":[0.93,1,0.73],
-    "bg":[0.06,0.06,0.07],"palPick":1,
-    "shading":1,"spinOn":true,"spinSpeed":0.3,
-    "source":"model","textContent":"HALFTONE","textDepth":0.3,"textBevel":0.04,"fontKey":"helvetiker_bold",
-    "lightAzimuth":-20,"lightElevation":55,"lightKeyInt":1.6,"lightAmbInt":0.2
-  },
-  "11": {
-    "mode":1,"density":80,"cellW":0.38,"cellH":2.5,"round":0,"rot":0,"spacing":0.04,
-    "fov":18,"sizeFromBrt":true,
-    "low":0,"mid":0.45,"high":1,
-    "colorMode":4,"solid":[0.66,1,0.04],"gLow":[0.1,0.2,0],"gMid":[0.53,0.85,0],"gHigh":[0.93,1,0.73],
-    "bg":[0.97,0.95,0.92],"palPick":3,
-    "shading":1,"spinOn":true,"spinSpeed":0.2,
-    "source":"model","textContent":"HALFTONE","textDepth":0.3,"textBevel":0.04,"fontKey":"helvetiker_bold",
-    "lightAzimuth":45,"lightElevation":30,"lightKeyInt":1.4,"lightAmbInt":0.35
-  },
-  "12": {
-    "mode":0,"density":55,"cellW":1.0,"cellH":1.0,"round":1,"rot":0,"spacing":0.12,
-    "fov":12,"sizeFromBrt":false,
-    "low":0.08,"mid":0.5,"high":0.96,
-    "colorMode":0,"solid":[0.05,0.05,0.06],"gLow":[0.1,0.2,0],"gMid":[0.53,0.85,0],"gHigh":[0.93,1,0.73],
-    "bg":[0.96,0.94,0.91],"palPick":2,
-    "shading":0,"spinOn":true,"spinSpeed":0.18,
-    "source":"model","textContent":"HALFTONE","textDepth":0.3,"textBevel":0.04,"fontKey":"helvetiker_bold",
-    "lightAzimuth":30,"lightElevation":45,"lightKeyInt":1.2,"lightAmbInt":0.4
-  }
-};
-
-if (!localStorage.getItem('halftone-tool-presets')) {
-  localStorage.setItem('halftone-tool-presets', JSON.stringify(BUNDLED_PRESETS));
-}
-loadPresetList();
-
-// ============================================================
-// RANDOMIZE
-// ============================================================
-document.getElementById('btn-rnd-toggle').addEventListener('click', () => {
-  document.getElementById('rnd-checks').classList.toggle('open');
-});
-
-function isChecked(key) {
-  const el = document.querySelector(`input[data-rnd="${key}"]`);
-  return el ? el.checked : true;
-}
-
-function randomize() {
-  const rnd  = (a, b) => a + Math.random() * (b - a);
-  const rndI = (a, b) => Math.floor(a + Math.random() * (b - a + 1));
-
-  if (isChecked('mode'))      { state.mode = rndI(0, 2); }
-  if (isChecked('density'))   { state.density = rndI(20, 180); }
-  if (isChecked('cellW'))     { state.cellW = parseFloat(rnd(0.3, 2.5).toFixed(2)); }
-  if (isChecked('cellH'))     { state.cellH = parseFloat(rnd(0.3, 2.5).toFixed(2)); }
-  if (isChecked('round'))     { state.round = parseFloat(rnd(0, 1).toFixed(2)); }
-  if (isChecked('rot'))       { state.rot = rndI(-45, 45); }
-  if (isChecked('spacing'))   { state.spacing = parseFloat(rnd(0, 0.55).toFixed(2)); }
-  if (isChecked('brightness')) {
-    const lo = parseFloat(rnd(0, 0.2).toFixed(2));
-    const hi = parseFloat(rnd(0.7, 1.0).toFixed(2));
-    state.low  = lo;
-    state.mid  = parseFloat(((lo + hi) / 2 + rnd(-0.1, 0.1)).toFixed(2));
-    state.high = hi;
-  }
-  if (isChecked('palPick'))   { state.palPick = rndI(0, 3); }
-  if (isChecked('fov'))       { state.fov = rndI(10, 60); camera.fov = state.fov; camera.updateProjectionMatrix(); }
-  if (isChecked('sizeFromBrt')) { state.sizeFromBrt = Math.random() > 0.5; document.getElementById('toggle-size-brt').classList.toggle('on', state.sizeFromBrt); }
-  if (isChecked('shading'))   {
-    state.shading = rndI(0, 1);
-    const mat = state.shading === 0 ? flatMaterial : litMaterial;
-    meshObjects.forEach(m => { m.material = mat; });
-    if (textMesh) textMesh.material = mat;
-    document.querySelector('.seg[data-control="shading"] button[data-val="flat"]').classList.toggle('active', state.shading === 0);
-    document.querySelector('.seg[data-control="shading"] button[data-val="lit"]').classList.toggle('active', state.shading === 1);
-  }
-
-  applyPreset(state); // re-sync all UI from state
-}
-
-document.getElementById('btn-randomize').addEventListener('click', randomize);
-
-// Source toggle
-bindSegmented('source', 'source', v => v);
-// Override: source needs setSource, not just state assignment
-document.querySelector('.seg[data-control="source"]').addEventListener('click', e => {
-  const btn = e.target.closest('button'); if (!btn) return;
-  setSource(btn.dataset.val);
-});
-
-// Font picker
-document.getElementById('font-select').addEventListener('change', function() {
-  state.fontKey = this.value;
-  loadFont(state.fontKey, font => { loadedFont = font; buildText(false); });
-});
-
-// Light sliders
-(function() {
-  function bindLight(id, key, fmt) {
-    const el = document.getElementById(id), val = document.getElementById('v-' + id);
-    el.addEventListener('input', () => {
-      state[key] = parseFloat(el.value);
-      val.textContent = fmt(state[key]);
-      updateKeyLight();
-    });
-  }
-  bindLight('lightaz',     'lightAzimuth',  v => v.toFixed(0) + '°');
-  bindLight('lightel',     'lightElevation',v => v.toFixed(0) + '°');
-  bindLight('lightkeyint', 'lightKeyInt',   v => v.toFixed(2));
-  bindLight('lightambint', 'lightAmbInt',   v => v.toFixed(2));
-  updateKeyLight();
-})();
-
-// Text input
-document.getElementById('text-input').addEventListener('input', function() {
-  state.textContent = this.value || ' ';
-  clearTimeout(textRebuildTimer);
-  textRebuildTimer = setTimeout(buildText, 300);
-});
-
-// Text depth & bevel
-(function() {
-  const depthEl = document.getElementById('textdepth');
-  const depthVal = document.getElementById('v-textdepth');
-  depthEl.addEventListener('input', () => {
-    state.textDepth = parseFloat(depthEl.value);
-    depthVal.textContent = state.textDepth.toFixed(2);
-    clearTimeout(textRebuildTimer);
-    textRebuildTimer = setTimeout(buildText, 200);
-  });
-  depthVal.textContent = state.textDepth.toFixed(2);
-
-  const bevelEl = document.getElementById('textbevel');
-  const bevelVal = document.getElementById('v-textbevel');
-  bevelEl.addEventListener('input', () => {
-    state.textBevel = parseFloat(bevelEl.value);
-    bevelVal.textContent = state.textBevel.toFixed(3);
-    clearTimeout(textRebuildTimer);
-    textRebuildTimer = setTimeout(buildText, 200);
-  });
-  bevelVal.textContent = state.textBevel.toFixed(2);
-})();
+// Layer colors + thresholds
+bindColor('layer-0-color', 'layer0');
+bindColor('layer-1-color', 'layer1');
+bindColor('layer-2-color', 'layer2');
+bindSlider('layert1', 'layerT1', v => v.toFixed(2), parseFloat, 'layert1');
+bindSlider('layert2', 'layerT2', v => v.toFixed(2), parseFloat, 'layert2');
 
 syncUniforms();
 
