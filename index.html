@@ -292,6 +292,30 @@
     border-color: rgba(255,255,255,0.75);
     box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
   }
+
+  /* Layer gradient pickers */
+  .layer-row-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-faint);
+    margin: 8px 0 4px;
+  }
+  .layer-pal {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 3px; margin-bottom: 4px;
+  }
+  .lpal-btn {
+    border: 1.5px solid transparent; border-radius: 5px;
+    padding: 7px 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: rgba(255,255,255,0.9);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    cursor: pointer; transition: border-color 0.12s;
+  }
+  .lpal-btn.active {
+    border-color: rgba(255,255,255,0.8);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+  }
 </style>
 </head>
 <body>
@@ -423,25 +447,45 @@
     </div>
 
     <div id="layer-controls" style="display:none;">
-      <div class="color-row">
-        <label>Dark</label>
-        <div class="swatch-wrap"><input type="color" id="layer-0-color" value="#1a0a05"></div>
+      <div class="layer-row-label">Dark</div>
+      <div class="layer-pal" data-layer="0">
+        <button class="lpal-btn active" data-val="0" style="background:linear-gradient(135deg,#645139,#5ca6cd)">Surf</button>
+        <button class="lpal-btn" data-val="1" style="background:linear-gradient(135deg,#e44d43,#f9cf80)">Sun</button>
+        <button class="lpal-btn" data-val="2" style="background:linear-gradient(135deg,#4e5d02,#a0b80a)">Fore</button>
+        <button class="lpal-btn" data-val="3" style="background:linear-gradient(135deg,#cf2f1e,#e18ea3)">Blm</button>
       </div>
       <div class="ctrl">
-        <label>Threshold</label><span class="val" id="v-layert1">0.33</span>
-        <input type="range" id="layert1" min="0.01" max="0.98" step="0.01" value="0.33">
+        <label>Threshold</label><span class="val" id="v-layert1">0.25</span>
+        <input type="range" id="layert1" min="0.01" max="0.97" step="0.01" value="0.25">
       </div>
-      <div class="color-row">
-        <label>Mid</label>
-        <div class="swatch-wrap"><input type="color" id="layer-1-color" value="#e44d43"></div>
+      <div class="layer-row-label">Mid-low</div>
+      <div class="layer-pal" data-layer="1">
+        <button class="lpal-btn" data-val="0" style="background:linear-gradient(135deg,#645139,#5ca6cd)">Surf</button>
+        <button class="lpal-btn" data-val="1" style="background:linear-gradient(135deg,#e44d43,#f9cf80)">Sun</button>
+        <button class="lpal-btn active" data-val="2" style="background:linear-gradient(135deg,#4e5d02,#a0b80a)">Fore</button>
+        <button class="lpal-btn" data-val="3" style="background:linear-gradient(135deg,#cf2f1e,#e18ea3)">Blm</button>
       </div>
       <div class="ctrl">
-        <label>Threshold</label><span class="val" id="v-layert2">0.67</span>
-        <input type="range" id="layert2" min="0.02" max="0.99" step="0.01" value="0.67">
+        <label>Threshold</label><span class="val" id="v-layert2">0.50</span>
+        <input type="range" id="layert2" min="0.02" max="0.98" step="0.01" value="0.5">
       </div>
-      <div class="color-row">
-        <label>Light</label>
-        <div class="swatch-wrap"><input type="color" id="layer-2-color" value="#f9cf80"></div>
+      <div class="layer-row-label">Mid-high</div>
+      <div class="layer-pal" data-layer="2">
+        <button class="lpal-btn" data-val="0" style="background:linear-gradient(135deg,#645139,#5ca6cd)">Surf</button>
+        <button class="lpal-btn active" data-val="1" style="background:linear-gradient(135deg,#e44d43,#f9cf80)">Sun</button>
+        <button class="lpal-btn" data-val="2" style="background:linear-gradient(135deg,#4e5d02,#a0b80a)">Fore</button>
+        <button class="lpal-btn" data-val="3" style="background:linear-gradient(135deg,#cf2f1e,#e18ea3)">Blm</button>
+      </div>
+      <div class="ctrl">
+        <label>Threshold</label><span class="val" id="v-layert3">0.75</span>
+        <input type="range" id="layert3" min="0.03" max="0.99" step="0.01" value="0.75">
+      </div>
+      <div class="layer-row-label">Light</div>
+      <div class="layer-pal" data-layer="3">
+        <button class="lpal-btn" data-val="0" style="background:linear-gradient(135deg,#645139,#5ca6cd)">Surf</button>
+        <button class="lpal-btn" data-val="1" style="background:linear-gradient(135deg,#e44d43,#f9cf80)">Sun</button>
+        <button class="lpal-btn" data-val="2" style="background:linear-gradient(135deg,#4e5d02,#a0b80a)">Fore</button>
+        <button class="lpal-btn active" data-val="3" style="background:linear-gradient(135deg,#cf2f1e,#e18ea3)">Blm</button>
       </div>
     </div>
 
@@ -523,11 +567,10 @@ const state = {
   spinOn: true,
   spinSpeed: 0.3,
   palPick: 1,
-  layer0: [0.102, 0.039, 0.020],  // #1a0a05
-  layer1: [0.894, 0.302, 0.263],  // #e44d43
-  layer2: [0.976, 0.812, 0.502],  // #f9cf80
-  layerT1: 0.33,
-  layerT2: 0.67,
+  layerGrad: [0, 2, 1, 3],  // which palette gradient each layer uses (Surface, Forest, Sunset, Bloom)
+  layerT1: 0.25,
+  layerT2: 0.50,
+  layerT3: 0.75,
 };
 
 // ============================================================
@@ -631,6 +674,7 @@ let videoAspect = 16 / 9;
 video.addEventListener('loadedmetadata', () => {
   videoAspect = video.videoWidth / video.videoHeight;
   videoPassMat.uniforms.uVideoAspect.value = videoAspect;
+  if (state.source === 1) resize(); // re-fit canvas to real video dims
 });
 
 const videoPassMat = new THREE.ShaderMaterial({
@@ -697,11 +741,13 @@ const halftoneMaterial = new THREE.ShaderMaterial({
     uPal3A:       { value: new THREE.Vector3(0.812, 0.184, 0.118) },
     uPal3B:       { value: new THREE.Vector3(0.882, 0.557, 0.639) },
     uPalPick:     { value: 0 },
-    uLayer0:      { value: new THREE.Vector3(0.102, 0.039, 0.020) },
-    uLayer1:      { value: new THREE.Vector3(0.894, 0.302, 0.263) },
-    uLayer2:      { value: new THREE.Vector3(0.976, 0.812, 0.502) },
-    uLayerT1:     { value: 0.33 },
-    uLayerT2:     { value: 0.67 },
+    uLayerGrad0:  { value: 0 },
+    uLayerGrad1:  { value: 2 },
+    uLayerGrad2:  { value: 1 },
+    uLayerGrad3:  { value: 3 },
+    uLayerT1:     { value: 0.25 },
+    uLayerT2:     { value: 0.50 },
+    uLayerT3:     { value: 0.75 },
   },
   vertexShader: /* glsl */`
     varying vec2 vUv;
@@ -740,11 +786,13 @@ const halftoneMaterial = new THREE.ShaderMaterial({
     uniform vec3  uPal3A; uniform vec3 uPal3B;
     uniform int   uPalPick;
 
-    uniform vec3  uLayer0;
-    uniform vec3  uLayer1;
-    uniform vec3  uLayer2;
+    uniform int   uLayerGrad0;
+    uniform int   uLayerGrad1;
+    uniform int   uLayerGrad2;
+    uniform int   uLayerGrad3;
     uniform float uLayerT1;
     uniform float uLayerT2;
+    uniform float uLayerT3;
 
     float luma(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
@@ -868,10 +916,13 @@ const halftoneMaterial = new THREE.ShaderMaterial({
         // Solid color sampled from user-picked gradient via brightness
         fillColor = palColor(uPalPick, t);
       } else {
-        // LAYERS — discrete color bands mapped to luminance
-        if (t < uLayerT1)      fillColor = uLayer0;
-        else if (t < uLayerT2) fillColor = uLayer1;
-        else                   fillColor = uLayer2;
+        // LAYERS — 4 luminance bands, each using a palette gradient
+        int lg;
+        if (t < uLayerT1)      lg = uLayerGrad0;
+        else if (t < uLayerT2) lg = uLayerGrad1;
+        else if (t < uLayerT3) lg = uLayerGrad2;
+        else                   lg = uLayerGrad3;
+        fillColor = palColor(lg, cellLocalT);
       }
       gl_FragColor = vec4(mix(bg, fillColor, mask), 1.0);
     }
@@ -884,8 +935,30 @@ quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), halftoneMaterial));
 // RESIZE
 // ============================================================
 function resize() {
-  const w = window.innerWidth, h = window.innerHeight;
+  const vw = window.innerWidth, vh = window.innerHeight;
   const dpr = renderer.getPixelRatio();
+  const stage = document.getElementById('stage');
+
+  let w, h;
+  if (state.source === 1) {
+    // Constrain canvas to the video's native aspect ratio (letterbox / pillarbox)
+    if (vw / vh > videoAspect) {
+      // viewport wider than video → pillarbox (black bars on sides)
+      h = vh;
+      w = Math.round(h * videoAspect);
+    } else {
+      // viewport taller than video → letterbox (black bars top/bottom)
+      w = vw;
+      h = Math.round(w / videoAspect);
+    }
+    const top  = Math.round((vh - h) / 2);
+    const left = Math.round((vw - w) / 2);
+    stage.style.cssText = `position:fixed;width:${w}px;height:${h}px;top:${top}px;left:${left}px;`;
+  } else {
+    w = vw; h = vh;
+    stage.style.cssText = 'position:fixed;inset:0;';
+  }
+
   renderer.setSize(w, h, false);
   sceneTarget.setSize(Math.floor(w * dpr), Math.floor(h * dpr));
   camera.aspect = w / h;
@@ -955,11 +1028,13 @@ function syncUniforms() {
   u.uGHigh.value.fromArray(state.gHigh);
   u.uBg.value.fromArray(state.bg);
   u.uPalPick.value = state.palPick;
-  u.uLayer0.value.fromArray(state.layer0);
-  u.uLayer1.value.fromArray(state.layer1);
-  u.uLayer2.value.fromArray(state.layer2);
+  u.uLayerGrad0.value = state.layerGrad[0];
+  u.uLayerGrad1.value = state.layerGrad[1];
+  u.uLayerGrad2.value = state.layerGrad[2];
+  u.uLayerGrad3.value = state.layerGrad[3];
   u.uLayerT1.value = state.layerT1;
   u.uLayerT2.value = state.layerT2;
+  u.uLayerT3.value = state.layerT3;
 }
 
 function bindSlider(id, key, fmt = v => v.toFixed(2), parse = parseFloat, valKey = id) {
@@ -1027,6 +1102,7 @@ document.querySelector('.seg[data-control="source"]').addEventListener('click', 
   document.getElementById('source-3d-ui').style.display = is3d ? '' : 'none';
   controls.enabled = is3d;
   if (!is3d) video.play().catch(() => {});
+  resize(); // re-fit canvas whenever source changes
 });
 bindSegmented('shading',   'shading',   v => ({ flat: 0, lit: 1 }[v]));
 
@@ -1064,12 +1140,23 @@ spinBtn.addEventListener('click', () => {
   spinBtn.classList.toggle('on', state.spinOn);
 });
 
-// Layer colors + thresholds
-bindColor('layer-0-color', 'layer0');
-bindColor('layer-1-color', 'layer1');
-bindColor('layer-2-color', 'layer2');
+// Layer gradient pickers
+document.querySelectorAll('.layer-pal').forEach(wrap => {
+  wrap.addEventListener('click', e => {
+    const btn = e.target.closest('.lpal-btn');
+    if (!btn) return;
+    const layerIdx = parseInt(wrap.dataset.layer);
+    wrap.querySelectorAll('.lpal-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.layerGrad[layerIdx] = parseInt(btn.dataset.val);
+    syncUniforms();
+  });
+});
+
+// Layer thresholds
 bindSlider('layert1', 'layerT1', v => v.toFixed(2), parseFloat, 'layert1');
 bindSlider('layert2', 'layerT2', v => v.toFixed(2), parseFloat, 'layert2');
+bindSlider('layert3', 'layerT3', v => v.toFixed(2), parseFloat, 'layert3');
 
 syncUniforms();
 
