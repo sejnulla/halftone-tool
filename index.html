@@ -317,6 +317,19 @@
     box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
   }
 
+  /* Randomize */
+  .randomize-btn {
+    width: 100%; border: none; border-radius: 8px;
+    padding: 11px; margin-bottom: 6px;
+    background: var(--accent); color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+  }
+  .randomize-btn:hover  { opacity: 0.88; }
+  .randomize-btn:active { transform: scale(0.97); }
+
   /* Presets */
   .preset-save {
     display: flex; gap: 6px; margin-bottom: 8px;
@@ -393,6 +406,8 @@
         <button data-val="1">Video</button>
       </div>
     </div>
+
+    <button class="randomize-btn" id="randomize-btn">⚄ Randomize</button>
 
     <!-- GRID -->
     <h2>Grid <span class="badge">structure</span></h2>
@@ -1289,6 +1304,62 @@ syncUniforms();
     syncUniforms();
   });
 })();
+
+// ============================================================
+// RANDOMIZE
+// ============================================================
+document.getElementById('randomize-btn').addEventListener('click', () => {
+  const pick  = arr => arr[Math.floor(Math.random() * arr.length)];
+  const rand  = (a, b) => a + Math.random() * (b - a);
+  const rnd2  = (a, b) => parseFloat(rand(a, b).toFixed(2));
+  const rndI  = (a, b) => Math.round(rand(a, b));
+
+  // Weighted toward palette modes (2/3/4/5); avoid raw gradient (1) and plain solid (0)
+  const colorMode = pick([2, 2, 3, 3, 4, 4, 5, 5, 0]);
+
+  // Four sorted thresholds for Layers mode
+  const raw = [rand(0.04,0.18), rand(0.22,0.42), rand(0.45,0.65), rand(0.68,0.92)];
+
+  const snap = {
+    // keep user's source + background + custom gradient colours
+    source: state.source,
+    bg:     [...state.bg],
+    solid:  [...state.solid],
+    gLow:   [...state.gLow],
+    gMid:   [...state.gMid],
+    gHigh:  [...state.gHigh],
+
+    // randomise everything visual
+    mode:        pick([0, 0, 1, 2]),          // bias toward cells
+    density:     rndI(20, 280),
+    cellW:       rnd2(0.3, 2.5),
+    cellH:       rnd2(0.3, 2.5),
+    round:       rnd2(0, 1),
+    rot:         rndI(-30, 30),
+    spacing:     rnd2(0, 0.55),
+    sizeFromBrt: Math.random() > 0.45,
+    fov:         rndI(10, 55),
+    shading:     pick([0, 1]),
+    spinOn:      Math.random() > 0.25,
+    spinSpeed:   rnd2(0.1, 1.2),
+
+    low:  rnd2(0, 0.2),
+    mid:  rnd2(0.25, 0.65),
+    high: rnd2(0.75, 1.0),
+
+    colorMode,
+    localGrad:  Math.random() > 0.3,
+    gradAngle:  rndI(0, 360),
+    palPick:    rndI(0, 3),
+    layerGrad:  [rndI(0,3), rndI(0,3), rndI(0,3), rndI(0,3), rndI(0,3)],
+    layerT1:    parseFloat(raw[0].toFixed(2)),
+    layerT2:    parseFloat(raw[1].toFixed(2)),
+    layerT3:    parseFloat(raw[2].toFixed(2)),
+    layerT4:    parseFloat(raw[3].toFixed(2)),
+  };
+
+  applyPreset({ state: snap });
+});
 
 // ============================================================
 // PRESETS
