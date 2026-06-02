@@ -414,6 +414,10 @@
       </div>
     </div>
 
+    <button class="toggle on" id="toggle-local-grad">
+      Cell gradient <span class="pill"></span>
+    </button>
+
     <div id="solid-controls" style="display:none;">
       <div class="color-row">
         <label>Fill</label>
@@ -577,6 +581,7 @@ const state = {
   shading: 1,         // 0=flat, 1=lit
   spinOn: true,
   spinSpeed: 0.3,
+  localGrad: true,   // true = gradient within each cell; false = sweeps full screen
   palPick: 1,
   layerGrad: [0, 0, 2, 1, 3],  // 5 layers: Blacks=Surface, Dark=Surface, Mid=Forest, Mid-light=Sunset, Light=Bloom
   layerT1: 0.12,   // Blacks / Dark threshold
@@ -752,6 +757,7 @@ const halftoneMaterial = new THREE.ShaderMaterial({
     uPal2B:       { value: new THREE.Vector3(0.627, 0.722, 0.039) },
     uPal3A:       { value: new THREE.Vector3(0.812, 0.184, 0.118) },
     uPal3B:       { value: new THREE.Vector3(0.882, 0.557, 0.639) },
+    uLocalGrad:   { value: 1 },
     uPalPick:     { value: 0 },
     uLayerGrad0:  { value: 0 },
     uLayerGrad1:  { value: 0 },
@@ -798,6 +804,7 @@ const halftoneMaterial = new THREE.ShaderMaterial({
     uniform vec3  uPal1A; uniform vec3 uPal1B;
     uniform vec3  uPal2A; uniform vec3 uPal2B;
     uniform vec3  uPal3A; uniform vec3 uPal3B;
+    uniform int   uLocalGrad;
     uniform int   uPalPick;
 
     uniform int   uLayerGrad0;
@@ -880,15 +887,31 @@ const halftoneMaterial = new THREE.ShaderMaterial({
       vec2  local = p - cellCenterPix;
       float gap   = 1.0 - uSpacing;
 
-      // Palette gradient direction: within-cell for CELLS, screen-space for COLS/ROWS
+      // Palette gradient direction: local (within each cell/bar) or global (full screen)
       float cellLocalT;
-      if (uMode == 0) {
-        vec2 hF = cellSize * 0.5 * gap * tSize;
-        cellLocalT = clamp(local.y / max(hF.y, 0.001) * 0.5 + 0.5, 0.0, 1.0);
-      } else if (uMode == 1) {
-        cellLocalT = clamp(pix.y / uResolution.y, 0.0, 1.0);
+      if (uLocalGrad == 1) {
+        // Local: gradient maps within each cell or bar's own bounds
+        if (uMode == 0) {
+          vec2 hF = cellSize * 0.5 * gap * tSize;
+          cellLocalT = clamp(local.y / max(hF.y, 0.001) * 0.5 + 0.5, 0.0, 1.0);
+        } else if (uMode == 1) {
+          // COLS bar: gradient goes left→right across bar width
+          float hw = cellSize.x * 0.5 * gap * tSize;
+          cellLocalT = clamp(local.x / max(hw, 0.001) * 0.5 + 0.5, 0.0, 1.0);
+        } else {
+          // ROWS bar: gradient goes top→bottom across bar height
+          float hh = cellSize.y * 0.5 * gap * tSize;
+          cellLocalT = clamp(local.y / max(hh, 0.001) * 0.5 + 0.5, 0.0, 1.0);
+        }
       } else {
-        cellLocalT = clamp(pix.x / uResolution.x, 0.0, 1.0);
+        // Global: gradient sweeps across the full canvas
+        if (uMode == 1) {
+          cellLocalT = clamp(pix.y / uResolution.y, 0.0, 1.0);
+        } else if (uMode == 2) {
+          cellLocalT = clamp(pix.x / uResolution.x, 0.0, 1.0);
+        } else {
+          cellLocalT = clamp(pix.y / uResolution.y, 0.0, 1.0);
+        }
       }
 
       float mask  = 0.0;
@@ -1044,6 +1067,7 @@ function syncUniforms() {
   u.uGMid.value.fromArray(state.gMid);
   u.uGHigh.value.fromArray(state.gHigh);
   u.uBg.value.fromArray(state.bg);
+  u.uLocalGrad.value = state.localGrad ? 1 : 0;
   u.uPalPick.value = state.palPick;
   u.uLayerGrad0.value = state.layerGrad[0];
   u.uLayerGrad1.value = state.layerGrad[1];
@@ -1157,6 +1181,14 @@ const spinBtn = document.getElementById('toggle-spin');
 spinBtn.addEventListener('click', () => {
   state.spinOn = !state.spinOn;
   spinBtn.classList.toggle('on', state.spinOn);
+});
+
+// Cell gradient toggle
+const localGradBtn = document.getElementById('toggle-local-grad');
+localGradBtn.addEventListener('click', () => {
+  state.localGrad = !state.localGrad;
+  localGradBtn.classList.toggle('on', state.localGrad);
+  syncUniforms();
 });
 
 // Layer gradient pickers
