@@ -1305,13 +1305,38 @@ function updateSeg(name, val) {
   );
 }
 
-const PRESETS_KEY = 'halftone-presets-v1';
+const PRESETS_KEY  = 'halftone-presets-v1';
+const SEEDED_KEY   = 'halftone-seeded-v1';
+
+// Presets authored by the creator — shipped with the tool
+const DEFAULT_PRESETS = [
+  {"name":"1","state":{"mode":2,"density":98,"cellW":1.4,"cellH":1.67,"round":1,"rot":0,"spacing":0.19,"fov":10,"sizeFromBrt":true,"low":0.01,"mid":0.49,"high":1,"source":0,"colorMode":2,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.525,0.851,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":90,"palPick":1,"layerGrad":[0,0,2,1,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"2","state":{"mode":0,"density":123,"cellW":1.21,"cellH":1.23,"round":1,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":true,"low":0.04,"mid":0.31,"high":0.89,"source":0,"colorMode":2,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.525,0.851,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":90,"palPick":1,"layerGrad":[0,0,2,1,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"3","state":{"mode":0,"density":68,"cellW":2.31,"cellH":2.5,"round":0,"rot":0,"spacing":0.23,"fov":10,"sizeFromBrt":false,"low":0.04,"mid":0.31,"high":0.89,"source":0,"colorMode":4,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":0,"palPick":2,"layerGrad":[0,0,2,1,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"4","state":{"mode":1,"density":107,"cellW":0.8,"cellH":2.5,"round":0,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":true,"low":0.04,"mid":0.31,"high":0.89,"source":0,"colorMode":4,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":0,"palPick":0,"layerGrad":[0,0,2,1,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"5","state":{"mode":2,"density":267,"cellW":1.48,"cellH":2.5,"round":0,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":true,"low":0.04,"mid":0.31,"high":0.89,"source":0,"colorMode":5,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"6","state":{"mode":2,"density":20,"cellW":0.3,"cellH":0.3,"round":0,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.43,"high":1,"source":0,"colorMode":5,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":false,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v 1","state":{"mode":2,"density":20,"cellW":0.3,"cellH":0.3,"round":0,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.43,"high":1,"source":1,"colorMode":5,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":false,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v2","state":{"mode":0,"density":20,"cellW":2.5,"cellH":0.76,"round":1,"rot":0,"spacing":0.07,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.43,"high":1,"source":1,"colorMode":5,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":false,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v3","state":{"mode":0,"density":20,"cellW":0.75,"cellH":0.76,"round":1,"rot":0,"spacing":0.07,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.43,"high":1,"source":1,"colorMode":5,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v4","state":{"mode":0,"density":20,"cellW":0.75,"cellH":0.76,"round":0.23,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.43,"high":1,"source":1,"colorMode":4,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v5","state":{"mode":0,"density":20,"cellW":2.5,"cellH":2.5,"round":0.23,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.43,"high":1,"source":1,"colorMode":4,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":0,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v6","state":{"mode":0,"density":20,"cellW":2.5,"cellH":2.5,"round":0.23,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0,"mid":0.16,"high":1,"source":1,"colorMode":3,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":37,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v7","state":{"mode":0,"density":20,"cellW":0.3,"cellH":2.5,"round":0,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0.14,"mid":0.35,"high":1,"source":1,"colorMode":3,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":false,"gradAngle":37,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+  {"name":"v8","state":{"mode":0,"density":214,"cellW":2.5,"cellH":2.5,"round":0,"rot":0,"spacing":0,"fov":10,"sizeFromBrt":false,"low":0.14,"mid":0.35,"high":1,"source":1,"colorMode":3,"solid":[0.659,1,0.039],"gLow":[0.102,0.2,0],"gMid":[0.431,0.702,0],"gHigh":[0.933,1,0.729],"bg":[0.961,0.945,0.918],"shading":1,"spinOn":true,"spinSpeed":0.3,"localGrad":true,"gradAngle":246,"palPick":0,"layerGrad":[0,1,2,3,3],"layerT1":0.12,"layerT2":0.25,"layerT3":0.5,"layerT4":0.75}},
+];
 
 function getPresets() {
   try { return JSON.parse(localStorage.getItem(PRESETS_KEY)) || []; }
   catch { return []; }
 }
 function putPresets(ps) { localStorage.setItem(PRESETS_KEY, JSON.stringify(ps)); }
+
+// Seed defaults for first-time visitors
+if (!localStorage.getItem(SEEDED_KEY)) {
+  if (!getPresets().length) putPresets(DEFAULT_PRESETS);
+  localStorage.setItem(SEEDED_KEY, '1');
+}
 
 function applyPreset(p) {
   Object.assign(state, p.state);
